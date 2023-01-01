@@ -7,6 +7,9 @@ import math
 
 from violator import Violator
 
+NEST_POSITION = (250000, 250000)
+NO_FLY_RADIUS = 100000
+
 
 def get_snapshot(session):
     """fetch drones snapshot, return xml"""
@@ -37,7 +40,8 @@ def update(violators, snapshot):
     for drone in root.iter('drone'):
         position = float(drone.find('positionX').text), float(
             drone.find('positionY').text)
-        if math.dist(position, (250000, 250000)) <= 100000:
+        distance = math.dist(position, NEST_POSITION)
+        if distance <= NO_FLY_RADIUS:
             # drone is a violator
             drone_id = drone.find('serialNumber').text
             pilot = get_pilot(drone_id)
@@ -50,11 +54,13 @@ def update(violators, snapshot):
                 email = pilot['email']
 
                 violators[pilot_id] = Violator(
-                    position, last_seen, name, phone, email)
+                    distance, last_seen, name, phone, email)
             else:
                 # known violator
-                violators[pilot_id].set_closest_approach(position)
-                violators[pilot_id].set_last_seen(last_seen)
+                violator = violators[pilot_id]
+                violator.set_last_seen(last_seen)
+                if distance < violator.get_closest_approach():
+                    violator.set_closest_approach(distance)
 
     for pilot_id in list(violators):
         last_seen = violators[pilot_id].get_last_seen()

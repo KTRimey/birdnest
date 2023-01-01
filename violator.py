@@ -15,6 +15,9 @@ class Violator:
     def set_last_seen(self, last_seen):
         self.last_seen = last_seen
 
+    def get_closest_approach(self):
+        return self.closest_approach
+
     def get_last_seen(self):
         return self.last_seen
 

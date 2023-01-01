@@ -6,7 +6,7 @@ import time
 import math
 import json
 
-from app.violator import Violator
+from violator import Violator, ViolatorEncoder
 
 violators = {}
 
@@ -56,8 +56,8 @@ def update(snapshot):
                     last_seen, position, name, phone, email)
             else:
                 # known violator
-                violators[pilot_id].last_seen = last_seen
                 violators[pilot_id].closest_approach = position
+                violators[pilot_id].last_seen = last_seen
 
 
 def update_periodically(period=2):
@@ -85,5 +85,4 @@ def before_first_request():
 
 @app.route("/")
 def report_violators():
-    result = {k: vars(v) for (k, v) in violators.items()}
-    return json.dumps(result)
+    return json.dumps(violators, cls=ViolatorEncoder)

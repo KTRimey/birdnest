@@ -9,6 +9,15 @@ class Violator:
         self.phone = phone
         self.email = email
 
+    def set_closest_approach(self, closest_approach):
+        self.closest_approach = closest_approach
+
+    def set_last_seen(self, last_seen):
+        self.last_seen = last_seen
+
+    def get_last_seen(self):
+        return self.last_seen
+
 
 class ViolatorEncoder(JSONEncoder):
     def default(self, o):

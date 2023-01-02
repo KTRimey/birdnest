@@ -15,7 +15,7 @@ type Violator = {
 };
 
 export function App() {
-  const [violators, setViolators] = useState<{ string: Violator }>();
+  const [violators, setViolators] = useState<Violator[]>();
 
   const doFetch = useCallback(() => {
     fetch("/report")
@@ -85,7 +85,7 @@ export function App() {
             </C.Thead>
             <C.Tbody>
               {violators &&
-                Object.entries(violators).map(([i, violator]) => (
+                violators.map((violator, i) => (
                   <C.Tr key={i}>
                     <ViolatorInfo
                       id={violator.drone_id}

@@ -27,7 +27,7 @@ def get_pilot(serial_number):
     url = f'https://assignments.reaktor.com/birdnest/pilots/{serial_number}'
     response = requests.get(url, headers={'accept': 'application/json'})
     if response.status_code == 404:
-        return {'firstName': None, 'lastName': None, 'phoneNumber': None, 'email': None}
+        return {}
     response.raise_for_status()
 
     return response.json()
@@ -58,11 +58,10 @@ def update(connection, snapshot):
             if not is_known:
                 # new violator
                 pilot = get_pilot(drone_id)
-                name = pilot['firstName'] + " " + pilot['lastName']
-                violator = (drone_id, distance, last_seen, name,
-                            pilot['phoneNumber'], pilot['email'])
+                violator = (drone_id, distance, last_seen, pilot.get('firstName'), pilot.get('lastName'),
+                            pilot.get('phoneNumber'), pilot.get('email'))
                 cur.execute(
-                    "INSERT INTO drone VALUES(?, ?, ?, ?, ?, ?)", violator)
+                    "INSERT INTO drone VALUES(?, ?, ?, ?, ?, ?, ?)", violator)
             else:
                 # known violator
                 prev_closest = cur.execute(
@@ -89,7 +88,6 @@ def update_periodically(connection, period=2):
             update(connection, get_snapshot())
         except Exception as e:
             logging.exception(e)
-            continue
 
         elapsed_time = time.time() - start_time
 

@@ -8,7 +8,8 @@ type Pilot = {
   drone_id: string;
   last_seen: string;
   closest_approach: number;
-  full_name: string | null;
+  first_name: string | null;
+  last_name: string | null;
   phone: string | null;
   email: string | null;
 };
@@ -88,7 +89,8 @@ export function App() {
                       id={pilot.drone_id}
                       closest_approach={pilot.closest_approach}
                       last_seen={pilot.last_seen}
-                      name={pilot.full_name}
+                      first_name={pilot.first_name}
+                      last_name={pilot.last_name}
                       phone={pilot.phone}
                       email={pilot.email}
                     />

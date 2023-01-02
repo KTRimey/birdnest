@@ -5,22 +5,26 @@ const PilotInfo = ({
   id,
   closest_approach,
   last_seen,
-  name,
+  first_name,
+  last_name,
   phone,
   email,
 }: {
   id: string;
   closest_approach: number;
   last_seen: string;
-  name: string | null;
+  first_name: string | null;
+  last_name: string | null;
   phone: string | null;
   email: string | null;
 }) => {
+  const name =
+    (first_name ? first_name + " " : "") + (last_name ? last_name : "");
   return (
     <>
       <C.Td>
         <C.VStack fontSize="lg" alignItems="flex-start" spacing="0">
-          <C.Text fontWeight="bold">{name ? name : ""}</C.Text>
+          <C.Text fontWeight="bold">{name}</C.Text>
           <C.Text fontSize="sm" opacity={0.6}>
             Drone ID: {id}
           </C.Text>

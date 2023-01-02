@@ -28,7 +28,7 @@ def close_connection(exception):
 
 @app.route('/report')
 def violator_report():
-    cur = get_db().cursor()
-    report = cur.execute(
+    con = get_db()
+    report = con.execute(
         'SELECT * FROM drone ORDER BY last_seen DESC').fetchall()
     return json.dumps(report)

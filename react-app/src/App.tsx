@@ -2,9 +2,9 @@ import { useState, useCallback, useEffect } from "react";
 import * as C from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
-import PilotInfo from "./PilotInfo";
+import Violator from "./Violator";
 
-type Pilot = {
+type Violator = {
   drone_id: string;
   last_seen: string;
   closest_approach: number;
@@ -15,13 +15,13 @@ type Pilot = {
 };
 
 export function App() {
-  const [pilots, setPilots] = useState<{ string: Pilot }>();
+  const [violators, setViolators] = useState<{ string: Violator }>();
 
   const doFetch = useCallback(() => {
     fetch("/report")
       .then((res) => res.json())
       .then((data) => {
-        setPilots(data);
+        setViolators(data);
       })
       .catch((e: Error) => {
         console.error(e);
@@ -82,17 +82,17 @@ export function App() {
               </C.Tr>
             </C.Thead>
             <C.Tbody>
-              {pilots &&
-                Object.entries(pilots).map(([i, pilot]) => (
+              {violators &&
+                Object.entries(violators).map(([i, violator]) => (
                   <C.Tr key={i}>
-                    <PilotInfo
-                      id={pilot.drone_id}
-                      closest_approach={pilot.closest_approach}
-                      last_seen={pilot.last_seen}
-                      first_name={pilot.first_name}
-                      last_name={pilot.last_name}
-                      phone={pilot.phone}
-                      email={pilot.email}
+                    <Violator
+                      id={violator.drone_id}
+                      closest_approach={violator.closest_approach}
+                      last_seen={violator.last_seen}
+                      first_name={violator.first_name}
+                      last_name={violator.last_name}
+                      phone={violator.phone}
+                      email={violator.email}
                     />
                   </C.Tr>
                 ))}

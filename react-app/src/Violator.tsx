@@ -1,7 +1,7 @@
 import * as C from "@chakra-ui/react";
 import { format } from "date-fns";
 
-const PilotInfo = ({
+const Violator = ({
   id,
   closest_approach,
   last_seen,
@@ -48,4 +48,4 @@ const PilotInfo = ({
   );
 };
 
-export default PilotInfo;
+export default Violator;

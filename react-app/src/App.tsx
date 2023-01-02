@@ -5,11 +5,12 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import PilotInfo from "./PilotInfo";
 
 type Pilot = {
+  drone_id: string;
   last_seen: string;
   closest_approach: number;
-  name: string;
-  phone: string;
-  email: string;
+  full_name: string | null;
+  phone: string | null;
+  email: string | null;
 };
 
 export function App() {
@@ -81,13 +82,13 @@ export function App() {
             </C.Thead>
             <C.Tbody>
               {pilots &&
-                Object.entries(pilots).map(([pilotId, pilot]) => (
-                  <C.Tr key={pilotId}>
+                Object.entries(pilots).map(([i, pilot]) => (
+                  <C.Tr key={i}>
                     <PilotInfo
-                      id={pilotId}
+                      id={pilot.drone_id}
                       closest_approach={pilot.closest_approach}
                       last_seen={pilot.last_seen}
-                      name={pilot.name}
+                      name={pilot.full_name}
                       phone={pilot.phone}
                       email={pilot.email}
                     />

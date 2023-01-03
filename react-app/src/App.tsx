@@ -8,6 +8,7 @@ type Violator = {
   drone_id: string;
   last_seen: string;
   closest_approach: number;
+  closest_approach_time: string;
   first_name: string | null;
   last_name: string | null;
   phone: string | null;
@@ -79,7 +80,7 @@ export function App() {
               <C.Tr>
                 <C.Th />
                 <C.Th>Closest Approach</C.Th>
-                <C.Th>Last Seen</C.Th>
+                <C.Th>Occured at</C.Th>
                 <C.Th />
               </C.Tr>
             </C.Thead>
@@ -90,7 +91,7 @@ export function App() {
                     <ViolatorInfo
                       id={violator.drone_id}
                       closest_approach={violator.closest_approach}
-                      last_seen={violator.last_seen}
+                      closest_approach_time={violator.closest_approach_time}
                       first_name={violator.first_name}
                       last_name={violator.last_name}
                       phone={violator.phone}

@@ -14,7 +14,7 @@ The file contains the following functions:
 
 Pilot information is only fetched for drones who have violated the NDZ perimeter.
 For each violator, a record is kept of when they were last seen, pilot information, and 
-their closest violation of the NDZ.
+their closest violation of the NDZ as well as the time it occured.
 Information on violators is kept for 10 minutes since their drone was last seen anywhere.
 
 """
@@ -88,17 +88,18 @@ def update(con, timestamp, drone_distances):
             if drone_id not in known_violators:
                 # create record for new drone
                 pilot = pilot_information.get(drone_id)
-                violator = (drone_id, distance_from_nest, timestamp, pilot.get('firstName'), pilot.get('lastName'),
-                            pilot.get('phoneNumber'), pilot.get('email'))
+                violator = (drone_id, distance_from_nest, timestamp, timestamp, pilot.get(
+                    'firstName'), pilot.get('lastName'), pilot.get('phoneNumber'), pilot.get('email'))
                 con.execute(
-                    "INSERT INTO drone VALUES(?, ?, ?, ?, ?, ?, ?)", violator)
+                    "INSERT INTO drone VALUES(?, ?, ?, ?, ?, ?, ?, ?)", violator)
             else:
-                # update closest approach
+                # update closest approach and its time
                 closest, = con.execute(
                     "SELECT closest_approach FROM drone WHERE drone_id=?", (drone_id,)).fetchone()
                 if distance_from_nest < closest:
                     con.execute(
-                        "UPDATE drone SET closest_approach=? WHERE drone_id=?", (distance_from_nest, drone_id))
+                        "UPDATE drone SET closest_approach=?, closest_approach_time=? WHERE drone_id=?",
+                        (distance_from_nest, timestamp, drone_id))
 
 
 def clear_expired(con, latest_snapshot_timestamp):

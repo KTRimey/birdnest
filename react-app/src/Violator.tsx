@@ -4,7 +4,7 @@ import { format } from "date-fns";
 const Violator = ({
   id,
   closest_approach,
-  last_seen,
+  closest_approach_time,
   first_name,
   last_name,
   phone,
@@ -12,7 +12,7 @@ const Violator = ({
 }: {
   id: string;
   closest_approach: number;
-  last_seen: string;
+  closest_approach_time: string;
   first_name: string | null;
   last_name: string | null;
   phone: string | null;
@@ -30,10 +30,12 @@ const Violator = ({
           </C.Text>
         </C.VStack>
       </C.Td>
-      <C.Td fontSize="lg">
-        <C.Text>{Math.round(closest_approach / 10) / 100} m</C.Text>
+      <C.Td fontSize="lg" textAlign="center">
+        {Math.round(closest_approach / 10) / 100} m
       </C.Td>
-      <C.Td fontSize="lg">{format(new Date(last_seen), "h:mm a")}</C.Td>
+      <C.Td fontSize="lg" textAlign="center">
+        {format(new Date(closest_approach_time), "h:mm a")}
+      </C.Td>
       <C.Td>
         {name ? (
           <C.VStack fontSize="sm" alignItems="flex-end">

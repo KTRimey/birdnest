@@ -1,3 +1,8 @@
+"""
+Script to initialize SQLite database of NDZ violators in 'database.db'
+and exectute 'schema.sql' to create drone table with specified schema.
+"""
+
 import sqlite3
 
 connection = sqlite3.connect('database.db')

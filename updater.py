@@ -1,3 +1,24 @@
+""" updater.py
+
+This script contains the task for making periodic calls to fetch snapshots 
+from the 'birdnest' drone monitoring service and populate the database of 
+recent NDZ violators with information served from the /report endpoint of 
+the Flask server in 'app.py'.
+
+The file contains the following functions:
+    * update_periodically - fetches snapshot and executes update every 2 seconds
+    * update - update 'drone' table in database based on snapshot
+    * get_snapshot - fetches and parses the xml snapshot
+    * get_pilot - fetches pilot information for a particular drone
+    * clear_expired - deletes the records of expired violators
+
+Pilot information is only fetched for drones who have violated the NDZ perimeter.
+For each violator, a record is kept of when they were last seen, pilot information, and 
+their closest violation of the NDZ.
+Information on violators is kept for 10 minutes since their drone was last seen anywhere.
+
+"""
+
 import sqlite3
 import requests
 import logging

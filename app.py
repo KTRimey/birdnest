@@ -1,6 +1,5 @@
 from flask import Flask
 from flask import g
-import json
 import sqlite3
 
 app = Flask(__name__)
@@ -31,4 +30,4 @@ def violator_report():
     con = get_db()
     report = con.execute(
         'SELECT * FROM drone ORDER BY last_seen DESC').fetchall()
-    return json.dumps(report)
+    return report

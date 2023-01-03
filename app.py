@@ -1,3 +1,5 @@
+"""Flask-based API server."""
+
 from flask import Flask
 from flask import g
 import sqlite3
@@ -29,5 +31,5 @@ def close_connection(exception):
 def violator_report():
     con = get_db()
     report = con.execute(
-        'SELECT * FROM drone ORDER BY last_seen DESC').fetchall()
+        'SELECT * FROM drone ORDER BY closest_approach_time DESC').fetchall()
     return report

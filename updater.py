@@ -1,22 +1,14 @@
-""" updater.py
+"""Update database periodically.
 
 This script contains the task for making periodic calls to fetch snapshots 
 from the 'birdnest' drone monitoring service and populate the database of 
 recent NDZ violators with information served from the /report endpoint of 
 the Flask server in 'app.py'.
 
-The file contains the following functions:
-    * update_periodically - fetches snapshot and executes update every 2 seconds
-    * update - update 'drone' table in database based on snapshot
-    * get_snapshot - fetches and parses the xml snapshot
-    * get_pilot - fetches pilot information for a particular drone
-    * clear_expired - deletes the records of expired violators
-
 Pilot information is only fetched for drones who have violated the NDZ perimeter.
 For each violator, a record is kept of when they were last seen, pilot information, and 
 their closest violation of the NDZ as well as the time it occured.
 Information on violators is kept for 10 minutes since their drone was last seen anywhere.
-
 """
 
 import sqlite3
@@ -34,7 +26,7 @@ NO_FLY_RADIUS = 100000
 
 
 def get_snapshot():
-    """fetch and parse drones snapshot"""
+    """Fetch and parse xml snapshot."""
 
     url = 'https://assignments.reaktor.com/birdnest/drones'
     response = requests.get(url, headers={'accept': 'application/xml'})
@@ -50,11 +42,11 @@ def get_snapshot():
             drone.find('positionY').text)
         drone_distances[drone_id] = math.dist(position, NEST_POSITION)
 
-    return (parser.parse(timestamp), drone_distances)
+    return parser.parse(timestamp), drone_distances
 
 
 def get_pilot(serial_number):
-    """fetch pilot info for violating drone"""
+    """Fetch pilot information for a particular drone."""
 
     url = f'https://assignments.reaktor.com/birdnest/pilots/{serial_number}'
     response = requests.get(url, headers={'accept': 'application/json'})
@@ -66,7 +58,7 @@ def get_pilot(serial_number):
 
 
 def update(con, timestamp, drone_distances):
-    """update database of violating drones based on snapshot"""
+    """Update table of NDZ violators in database based on snapshot."""
 
     known_violators = set(id for id, in con.execute(
         "SELECT drone_id FROM drone").fetchall())
@@ -87,7 +79,7 @@ def update(con, timestamp, drone_distances):
             # drone is in violation
             if drone_id not in known_violators:
                 # create record for new drone
-                pilot = pilot_information.get(drone_id)
+                pilot = pilot_information[drone_id]
                 violator = (drone_id, distance_from_nest, timestamp, timestamp, pilot.get(
                     'firstName'), pilot.get('lastName'), pilot.get('phoneNumber'), pilot.get('email'))
                 con.execute(
@@ -103,18 +95,18 @@ def update(con, timestamp, drone_distances):
 
 
 def clear_expired(con, latest_snapshot_timestamp):
-    """delete record of violator if the drone has not been seen for some time"""
+    """Delete the record of expired violators."""
 
     violators = con.execute("SELECT drone_id, last_seen FROM drone").fetchall()
 
     for drone_id, last_seen in violators:
-        time_since = (latest_snapshot_timestamp - parser.parse(last_seen))
+        time_since = latest_snapshot_timestamp - parser.parse(last_seen)
         if time_since >= EXPIRATION:
             con.execute("DELETE FROM drone WHERE drone_id=?", (drone_id,))
 
 
 def update_periodically(connection, period=2):
-    """execute update task every 2 seconds"""
+    """Fetch snapshot and update database every 2 seconds."""
     while True:
         start_time = time.time()
         try:

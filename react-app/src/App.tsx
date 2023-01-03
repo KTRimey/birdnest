@@ -80,7 +80,7 @@ export function App() {
               <C.Tr>
                 <C.Th />
                 <C.Th>Closest Approach</C.Th>
-                <C.Th>Occured at</C.Th>
+                <C.Th>Occurred at</C.Th>
                 <C.Th />
               </C.Tr>
             </C.Thead>

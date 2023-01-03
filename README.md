@@ -26,8 +26,8 @@ It is a good idea to run birdnest in a virtual environment. Set this up with the
 
 ###### Running:
 
-`python init_db.py` to create the SQLite database and table<br />
-`python updater.py &` to launch updater in the background<br />
+`python3 init_db.py` to create the SQLite database and table<br />
+`python3 updater.py &` to launch updater in the background<br />
 `flask run` to launch Flask server<br />
 `npm start` in react-app directory to launch web app
 

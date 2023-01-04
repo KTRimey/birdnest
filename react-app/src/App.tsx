@@ -19,7 +19,7 @@ export function App() {
   const [violators, setViolators] = useState<Violator[]>();
 
   const doFetch = useCallback(() => {
-    fetch("/report")
+    fetch("/api/report")
       .then((res) => res.json())
       .then((data) => {
         setViolators(data);
@@ -53,7 +53,7 @@ export function App() {
             <C.PopoverTrigger>
               <C.Image
                 boxSize="16rem"
-                src="/DALLE.png"
+                src="DALLE.png"
                 alt="DALL-E generated image of drone and duck"
               />
             </C.PopoverTrigger>

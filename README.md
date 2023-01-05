@@ -1,6 +1,6 @@
 # Birdnest Report
 
-## A web application for monitoring recent violators of the Monadikuikka NDZ -- [PROJECT BIRDNEST](https://assignments.reaktor.com/birdnest/)
+## A web application for monitoring recent violators of the Monadikuikka NDZ — [PROJECT BIRDNEST](https://assignments.reaktor.com/birdnest/)
 
 > A rare and endangered Monadikuikka has been spotted nesting at a local lake.
 
@@ -15,11 +15,11 @@ Birdnest Report is intended to be deployed as a Docker container running Green U
 
 I'll be running Birdnest Report for a little while at http://34.88.12.123/.
 
-#### Here's how to run Birdnest Report on your own machine in development mode.
+#### Running Birdnest Report on your own machine in development mode
 
 ###### Installation:
 
-It is a good idea to run the Python code in a virtual environment. Set this up with the required dependencies with the following commands.
+It's a good idea to run the Python code in a virtual environment. Set this up with the required dependencies using the following commands.
 
 `python3 -m venv venv`<br />
 `. venv/bin/activate`<br />
@@ -32,7 +32,7 @@ Set up Node to serve the React app by running the following command in the react
 ###### Running:
 
 `python3 init_db.py` - to create the SQLite database and table<br />
-`python3 updater.py &` - to launch the updater in the background<br />
+`python3 updater.py` - to launch the updater<br />
 `flask run` - to launch the Flask server<br />
 `npm start` - in the react-app directory
 
@@ -43,6 +43,6 @@ To look at the database, try the following:
 `sqlite3 database.db`<br />
 `SELECT * FROM drone;`
 
-###### Deploying in Cloud:
+#### Deploying in cloud
 
-For the production deployment I'm only running one server. I built the React app and configured Flask to serve the static files, and then built a Docker image (see the Dockerfile for details). I uploaded the Docker image to Google Artifact Registry and then ran that in Google Compute Engine, adding PORT=80 to the environment.
+For the production deployment, I'm only running one server. I built the React app and configured Flask to serve the static files, and then built a Docker image (see the Dockerfile for details). I uploaded the Docker image to Google Artifact Registry and then ran that in Google Compute Engine, adding PORT=80 to the environment.
